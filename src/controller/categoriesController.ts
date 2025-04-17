@@ -47,8 +47,6 @@ export const fetchAllCategories = async (req: Request, res: Response) => {
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Skapa ny kategori med POST: http://localhost:3000/categories
 
-/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
-
 export const createCategory = async (req: Request, res: Response) => {
 
     const {name} = req.body;
@@ -85,4 +83,10 @@ export const createCategory = async (req: Request, res: Response) => {
     catch (error: unknown) {
         res.status(500).json({error: error, message: "Server error vid post, dvs tillägg av ny kategori"});
     }
-}
+};
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+
+
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
