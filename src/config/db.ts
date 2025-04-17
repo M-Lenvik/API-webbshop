@@ -1,3 +1,5 @@
+//config/db.ts
+
 import mysql from 'mysql2/promise';
 
 import * as dotenv from 'dotenv';
@@ -17,6 +19,7 @@ export const connectToDatabase= async () => {
         await db.getConnection();
         console.log ('Connected to DB')
     }
+    
     catch (error: unknown){
         console.log ('Error, no DB connection:' + error)
     }

@@ -1,3 +1,5 @@
+//index.ts
+
 import 'dotenv/config';
 import express from 'express'; // Import express
 import cors from 'cors';
@@ -13,6 +15,8 @@ app.use(cors());        // This makes the Express server except request from oth
 import categoryRoutes from './routes/categories'; // Import the task routes
 app.use('/categories', categoryRoutes);
 
+import productRoutes from './routes/products';
+app.use('/products', productRoutes);
 
 
 connectToDatabase();
