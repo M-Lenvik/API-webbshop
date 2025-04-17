@@ -2,7 +2,7 @@
 
 import express from 'express'; // Import express
 import { 
-    fetchAllCategories
+    fetchAllCategories, createCategory
 }
 from '../controller/categoriesController'; // Importera controllern
 
@@ -17,5 +17,6 @@ const router = express.Router(); // Create an instanse
 
 router.get('/', fetchAllCategories); // Hämta alla kategorier
 router.get('/:id/products', fetchProductsByCategoryId); // Hämta produkt ur kategori
+router.post('/', createCategory); // Skapa ny kategori
 
 export default router; // Exportera routern

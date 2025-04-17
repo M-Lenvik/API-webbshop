@@ -44,7 +44,45 @@ export const fetchAllCategories = async (req: Request, res: Response) => {
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
 
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+//Skapa ny kategori med POST: http://localhost:3000/categories
 
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
+export const createCategory = async (req: Request, res: Response) => {
 
+    const {name} = req.body;
+    try{
+        //Felmeddelande om ngt saknas
+        if (!name) {
+            res.status(400).json({message: "Please provide name"});
+            return;
+        }
 
+    try{
+        //Kolla om sorten redan finns
+        const checkSql = `SELECT * FROM categories WHERE name = ?`;
+        const [existing] = await db.query<RowDataPacket[]>(checkSql, [name]);
+
+        if (existing.length > 0) {
+            return res.status(409).json ({message: "Kategorin finns redan. Lägg till en annan"});
+        }
+
+        const sql = `
+            INSERT INTO categories (name)
+            VALUES (?)
+        `
+        const [result] = await db.query<ResultSetHeader>( sql, [name])
+            res.status(201).json({message: 'Ny kategori tillagd', id: result.insertId});
+        }
+        catch(error: unknown){
+            const message = error instanceof Error ? error.message : 'Unkown error'
+            res.status(500).json({error: message});
+        }
+        
+
+    }
+    catch (error: unknown) {
+        res.status(500).json({error: error, message: "Server error vid post, dvs tillägg av ny kategori"});
+    }
+}
