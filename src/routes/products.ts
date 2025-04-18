@@ -5,7 +5,8 @@ import {
     fetchAllProducts,
     fetchProductById,
     createProduct,
-    updateProduct
+    updateProduct,
+    deleteProduct
 } 
 from '../controller/productController'; // Importera controllern
 
@@ -15,6 +16,7 @@ router.get('/', fetchAllProducts); // Hämta alla produkter
 router.get('/:id', fetchProductById); // Hämta produkt ur kategori
 router.post('/', createProduct); // Hämta produkt ur kategori
 router.patch('/:id', updateProduct); // Uppdatera befintlig kategori
+router.delete('/:id', deleteProduct); // Uppdatera befintlig kategori
 
 
 export default router; // Exportera routern

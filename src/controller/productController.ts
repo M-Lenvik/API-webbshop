@@ -203,4 +203,28 @@ export const updateProduct = async (req: Request, res: Response) => {
 };
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+//Radera befintlig produkt med DELETE: http://localhost:3000/products/:id
+export const deleteProduct = async (req: Request, res: Response) => {
+    const id = req.params.id;
 
+    try{
+        const sql = `
+            DELETE FROM products 
+            WHERE id = ?
+        `
+
+        const [result] = await db.query<ResultSetHeader>(sql, [id])
+        if (result.affectedRows === 0) {
+            res.status (404).json({message: 'Produkt hittades inte'})
+            return;
+        }
+
+    res.json({message: "Produkt borttagen"});
+    }
+    catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error'
+        res.status (500).json ({error: message})
+    }
+};
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
