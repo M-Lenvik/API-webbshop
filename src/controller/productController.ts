@@ -8,11 +8,10 @@ import { ICategoriesDBResponse } from "../models/ICategoryDBResponse";
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Hämta alla produkter med GET: http://localhost:3000/products
 export const fetchAllProducts = async (req: Request, res: Response) => {
-
     const search = req.query.search as string;
     const sort = req.query.sort as string;
-
     console.log("Sökord:", search);
+    
     let sql = 'SELECT * FROM products';
     let params: string[] = [];
     let searchSQL = "";
@@ -159,7 +158,6 @@ export const updateProduct = async (req: Request, res: Response) => {
 
         const fieldsToUpdate: string[] = [];
         const values: (string | number)[] = [];
-
         const allowedFields: Record<string, string | number | undefined> = {
             title,
             description,
@@ -187,15 +185,14 @@ export const updateProduct = async (req: Request, res: Response) => {
         `;
 
         values.push(id);
-
         const [result] = await db.query<ResultSetHeader>(sql, values);
-
         if (result.affectedRows === 0) {
             res.status(404).json({ message: "Produkt hittades ej" });
             return;
         }
         res.status(200).json({message: 'Produkt uppdaterad', id, affectedFields: fieldsToUpdate.map(f => f.split(" ")[0])});
     }
+
     catch (error: unknown) {
         const message = error instanceof Error ? error.message : "Unknown error";
         res.status(500).json({error: message, message: "Server error vid uppdatering av produkter"});
@@ -219,9 +216,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
             res.status (404).json({message: 'Produkt hittades inte'})
             return;
         }
-
     res.json({message: "Produkt borttagen"});
     }
+
     catch (error: unknown) {
         const message = error instanceof Error ? error.message : 'Unknown error'
         res.status (500).json ({error: message})
