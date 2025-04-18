@@ -88,5 +88,39 @@ export const createCategory = async (req: Request, res: Response) => {
 
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+//Uppdatera befintlig kategori med PATCH: http://localhost:3000/categories/:id
+export const updateCategory = async (req: Request, res: Response) => {
+    const {name} = req.body;
+    const { id } = req.params; // Hämtar ID från URL:en
+
+    try {
+        //Felmeddelande om ngt saknas
+        if (!name) {
+            res.status(400).json({message: "Please provide name"});
+            return;
+        }
+
+        if (!id) {
+            res.status(400).json({ error: "categories:id is required" });
+            return;
+        }
+
+        const sql = `
+            UPDATE categories
+            SET name = ?
+            WHERE id = ?
+        `;
+        const [result] = await db.query<ResultSetHeader>(sql, [name, id]);
+
+        if (result.affectedRows === 0) {
+            res.status(404).json({ message: "Kategori hittades ej" });
+            return;
+        }
+        res.status(200).json({message: 'Kategori uppdaterad', id: id, affectedRows: result.affectedRows});
+    }
+    catch (error: unknown) {
+        res.status(500).json({error: error, message: "Server error vid uppdatering av kategori"});
+    }
+};
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/

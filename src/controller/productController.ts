@@ -78,7 +78,7 @@ export const fetchProductById = async (req: Request, res: Response) => {
         SELECT products. *,
         categories.name AS category_name
         FROM products
-        JOIN categories
+        LEFT JOIN categories
         ON products.categories_id = categories.id
         WHERE products.id =  ?
     `;
@@ -142,3 +142,65 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 };
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+
+
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+//Uppdatera befintlig produkt med PATCH: http://localhost:3000/products/:id
+export const updateProduct = async (req: Request, res: Response) => {
+    const {title, description, price, image, categories_id} = req.body;
+    const { id } = req.params; // Hämtar ID från URL:en
+
+    try {
+        //Felmeddelande om ngt saknas
+        if (!id) {
+            res.status(400).json({ error: "products:id is required" });
+            return;
+        }
+
+        const fieldsToUpdate: string[] = [];
+        const values: (string | number)[] = [];
+
+        const allowedFields: Record<string, string | number | undefined> = {
+            title,
+            description,
+            price,
+            image,
+            categories_id
+        };
+
+        for (const [key, value] of Object.entries(allowedFields)) {
+            if (value !== undefined) {
+                fieldsToUpdate.push(`${key} = ?`);
+                values.push(value);
+            }
+        }
+
+        if (fieldsToUpdate.length === 0) {
+            res.status(400).json({ message: "No valid fields provided for update" });
+            return;
+        }
+
+        const sql = `
+            UPDATE products
+            SET ${fieldsToUpdate.join(", ")}
+            WHERE id = ?
+        `;
+
+        values.push(id);
+
+        const [result] = await db.query<ResultSetHeader>(sql, values);
+
+        if (result.affectedRows === 0) {
+            res.status(404).json({ message: "Produkt hittades ej" });
+            return;
+        }
+        res.status(200).json({message: 'Produkt uppdaterad', id, affectedFields: fieldsToUpdate.map(f => f.split(" ")[0])});
+    }
+    catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        res.status(500).json({error: message, message: "Server error vid uppdatering av produkter"});
+    }
+};
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+
+
