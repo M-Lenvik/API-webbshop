@@ -1,5 +1,5 @@
 //models/ICategories.ts
-
+/*
 import { RowDataPacket } from "mysql2";
 
 export interface ICategories extends RowDataPacket {
@@ -7,3 +7,4 @@ export interface ICategories extends RowDataPacket {
     id: number;
     name: string;
 }
+    */

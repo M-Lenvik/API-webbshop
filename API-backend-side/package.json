@@ -18,6 +18,8 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^6.1.1",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   },

@@ -7,32 +7,48 @@ import { ICategoriesDBResponse } from "../models/ICategoryDBResponse";
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Hämta alla produkter med GET: http://localhost:3000/products
+//DONE
 export const fetchAllProducts = async (req: Request, res: Response) => {
-    const search = req.query.search as string;
-    const sort = req.query.sort as string;
-    console.log("Sökord:", search);
+    const searchTitle = req.query.search as string;
+    const sortTitle = req.query.sortTitle as string;
+    const sortPrice = req.query.sortPrice as string;
+    console.log("Sökord:", searchTitle);
     
     let sql = 'SELECT * FROM products';
-    let params: string[] = [];
-    let searchSQL = "";
-    let sortSQL = "";
+    const params: string[] = [];
+    const conditions: string[] =[];
+    const orderBy: string[] = [];
 
     try {
-        if (search) {
-            searchSQL = ' WHERE title LIKE ?';
-            params = [`%${search}%`];
+        //Skall kunna söka produkter efter produkttitel
+        //DONE
+        if (searchTitle) {
+            conditions.push ('title LIKE ?');
+            params.push(`%${searchTitle}%`);
         }
 
-        if (sort) {
-            const OrderBy = sort === 'desc' ? 'DESC' : 'ASC';
-            sortSQL = ' ORDER BY title ' + OrderBy;
+        if (sortTitle && (sortTitle === 'asc' || sortTitle === 'desc')) {
+            orderBy.push(`title ${sortTitle.toUpperCase()}`);
         }
 
-        sql = sql + searchSQL + sortSQL;
+        //Skall kunna sortera produktlistan efter pris, både (asc/desc)
+        //DONE
+        if (sortPrice && (sortPrice === 'asc' || sortPrice === 'desc')) {
+            orderBy.push(`price ${sortPrice.toUpperCase()}`);
+        }
+    
+        if (conditions.length > 0) {
+            sql += ' WHERE ' + conditions.join(' AND ');
+        }
+
+        if (orderBy.length > 0) {
+            sql += ' ORDER BY ' + orderBy.join(', ');
+        }
+
         const [rows] = await db.query<RowDataPacket[]>(sql, params);
         res.json(rows)
     }
-    
+
     catch (error: unknown) {
         const message = error instanceof Error ? error.message : 'Unknown error'
         res.status(500).json({ error: message });
@@ -42,6 +58,7 @@ export const fetchAllProducts = async (req: Request, res: Response) => {
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Hämta alla produkter tillhörande en viss kategori med GET: http://localhost:3000/categories/:id/products
+//DONE
 export const fetchProductsByCategoryId = async (req: Request, res: Response) => {
     const categoryId = req.params.id;
 
@@ -69,6 +86,7 @@ export const fetchProductsByCategoryId = async (req: Request, res: Response) => 
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Hämta enskild produkt med GET: http://localhost:3000/products/:id
+//DONE
 export const fetchProductById = async (req: Request, res: Response) => {
     const productId = req.params.id;
 
@@ -101,7 +119,8 @@ export const fetchProductById = async (req: Request, res: Response) => {
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Skapa ny produkt med POST: http://localhost:3000/products
-export const createProduct = async (req: Request, res: Response) => {
+//DONE
+export const createProduct = async (req: Request, res: Response): Promise<Response | void> => {
     const {categories_id, title, description, price, image} = req.body;
 
     //Kolla om något av de obligatoriska fälten tomma eller saknas
@@ -145,6 +164,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Uppdatera befintlig produkt med PATCH: http://localhost:3000/products/:id
+//DONE
 export const updateProduct = async (req: Request, res: Response) => {
     const {title, description, price, image, categories_id} = req.body;
     const { id } = req.params; // Hämtar ID från URL:en
@@ -202,6 +222,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Radera befintlig produkt med DELETE: http://localhost:3000/products/:id
+//DONE
 export const deleteProduct = async (req: Request, res: Response) => {
     const id = req.params.id;
 
@@ -225,3 +246,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
     }
 };
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+
+
+
+
+//TODO:
+//Lägg till kontroll att stock finns med i produktlistan

@@ -1,14 +1,12 @@
 //controller/categoriesController.ts
 
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { db } from "../config/db";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
-import { ICategories } from "../models/ICategories";
-import { ICategoriesDBResponse } from "../models/ICategoriesDBResponse";
-
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Hämta alla kategorier med GET: http://localhost:3000/categories
+//DONE
 export const fetchAllCategories = async (req: Request, res: Response) => {
 
     const search = req.query.search as string;
@@ -46,8 +44,8 @@ export const fetchAllCategories = async (req: Request, res: Response) => {
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Skapa ny kategori med POST: http://localhost:3000/categories
-
-export const createCategory = async (req: Request, res: Response) => {
+//DONE
+export const createCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
     const {name} = req.body;
     try{
@@ -63,7 +61,7 @@ export const createCategory = async (req: Request, res: Response) => {
             const [existing] = await db.query<RowDataPacket[]>(checkSql, [name]);
 
             if (existing.length > 0) {
-                return res.status(409).json ({message: "Kategorin finns redan. Lägg till en annan"});
+                res.status(409).json ({message: "Kategorin finns redan. Lägg till en annan"});
             }
 
             const sql = `
@@ -82,6 +80,7 @@ export const createCategory = async (req: Request, res: Response) => {
 
     catch (error: unknown) {
         res.status(500).json({error: error, message: "Server error vid post, dvs tillägg av ny kategori"});
+        next(error);
     }
 };
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
@@ -89,6 +88,7 @@ export const createCategory = async (req: Request, res: Response) => {
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Uppdatera befintlig kategori med PATCH: http://localhost:3000/categories/:id
+//DONE
 export const updateCategory = async (req: Request, res: Response) => {
     const {name} = req.body;
     const { id } = req.params; // Hämtar ID från URL:en
@@ -127,6 +127,7 @@ export const updateCategory = async (req: Request, res: Response) => {
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Radera befintlig kategori med DELETE: http://localhost:3000/categories/:id
+//DONE
 export const deleteCategory = async (req: Request, res: Response) => {
     const id = req.params.id;
 

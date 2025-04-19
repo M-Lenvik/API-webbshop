@@ -5,7 +5,7 @@
 
 
 //jag tror att jag kan ta bort den här filen, den är inte i bruk längre
-
+/*
 export class Categories {
     //kommer innifrån
     id: number = 0;
@@ -19,3 +19,4 @@ export class Categories {
         this.name = name;
     }
 }
+    */
