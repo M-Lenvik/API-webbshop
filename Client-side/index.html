@@ -1,19 +1,40 @@
+<!--Client-side/index.html-->
 <!DOCTYPE html>
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Development</title>
+    <title>API Webbshop</title>
     
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
     <h1>API Webbshop</h1>
     <div class="container">
+        <button id="filterAccessories">Visa endast Accessoarer</button>
+        <button id="filterElectronics">Visa endast Elektronik</button>
+        <button id="filterCloths">Visa endast Kläder</button>
+        <button id="filterLights">Visa endast Lampor</button>
+        <button id="filterFurnitures">Visa endast Möbler</button>
+        <button id="filterLinnen">Visa endast Sängkläder</button>
+        <button id="filterShoes">Visa endast Skor</button>
+        <button id="filterOutdoorFutnitures">Visa endast Utemöbler</button>
+        <button id="showAll">Visa alla</button>
 
+        <form id="categories-form" class="row g-3 flex justify-content-end">
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="search" placeholder="Search" name="search">
+            </div>
+            <div class="col-md-2">
+                <select id="inputState" class="form-select" id="sort" name="sort">
+                    <option value="asc">Sortera på Kategori A <- -> Ö</option>
+                    <option value="desc">Sortera på Kategori Ö <- -> A</option>
+                </select>
+            </div>
+        </form>
+   
         <div id="categories"></div>
     </div>
-
     <script src="js/main.js"></script>
 </body>
 </html>
