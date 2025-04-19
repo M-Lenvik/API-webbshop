@@ -1,0 +1,20 @@
+body{
+    background-color: burlywood;
+}
+
+#categories{
+    margin-top: 20px;
+    background-color: burlywood;
+}
+
+#categories div{
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.name{
+    display: block;
+    font-size: 2em;
+}
