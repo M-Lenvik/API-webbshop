@@ -20,8 +20,8 @@ const getQueryString = (e) => {
     if (e !== undefined) {
       console.log('Querystring', e.target)
       console.log(e.target.name)
-  
-      return `/?${e.target.name}`;
+      console.log(e.target.value)
+      return `/?${e.target.name}=${e.target.value}`;
     }
   
     return ""
@@ -40,31 +40,66 @@ const getQueryString = (e) => {
             url.searchParams.append('search', currentSearchTerm);
         }
 
-        const response = await fetch(url);
-        const data = await response.json();
+        const [categoriesRes, productsRes] = await Promise.all([
+            fetch(url),
+            fetch('http://localhost:3000/products')
+        ]);
 
-        let filteredData = data;
+        const categories = await categoriesRes.json();
+        const products = await productsRes.json();
+
+        let filteredCategories = categories;
         
         if (matchExactCategory) {
-            filteredData = data.filter(category =>
+            filteredCategories = categories.filter(category =>
                 category.name.toLowerCase() === currentSearchTerm.toLowerCase()
             );
         }
 
-        categoriesElement.innerHTML = filteredData.map((category) =>
-            `<div>
-                <p>
-                <span class="category">${category.name}</span>
+        categoriesElement.innerHTML = filteredCategories.map((category) => `
+            <div class="category-block" data-id="${category.id}">
+            <h3 class="category-title">${category.name}</h3>
+            <div class="products-container" style="display: none;"></div>
+        </div>
+      `).join('');
+      console.log('Kategorier:', categories)
+     
 
-                </p>
-            </div>`
-        ).join('');
+        document.querySelectorAll('.category-title').forEach(title => {
+        title.addEventListener('click', (event) => {
+            const categoryBlock = event.target.closest('.category-block');
+            const productsContainer = categoryBlock.querySelector('.products-container');
+            const categoryId = parseInt(categoryBlock.dataset.id, 10);
 
-        console.log('Data:', data);
-    } catch (error) {
-        categoriesElement.innerHTML = "Något gick fel hos oss, försök igen lite senare";
-        console.log('Catch error:', error);
-    }
+            const productsInCategory = products.filter(
+                product => product.categories_id === categoryId
+                
+            );
+    
+
+            productsContainer.innerHTML = productsInCategory.length > 0
+            ? productsInCategory.map(product => `
+                <div class="product">
+                    <strong>${product.title}</strong><br>
+                    Pris: ${product.price} kr<br>
+                    ${product.description}
+                </div>
+            `).join('')
+            : '<p>Inga produkter i denna kategori.</p>';
+
+            // Visa/dölj produkterna (växla visning)
+            productsContainer.style.display =
+                productsContainer.style.display === 'none' ? 'block' : 'none';
+            });
+    
+        });
+        console.log('Produkter:', products);
+        }
+
+        catch (error) {
+            categoriesElement.innerHTML = "Något gick fel hos oss, försök igen lite senare";
+            console.log('Catch error:', error);
+        }
 };
 
 sortElement.addEventListener('change', (event) => {
@@ -134,3 +169,83 @@ showAllButton.addEventListener('click', () => {
 });
 
   fetchCategories();
+
+
+/*
+  const productsByCategoryElement = document.getElementById('products-by-category');
+
+  const fetchCategoriesAndProducts = async () => {
+      try {
+          const [categoriesRes, productsRes] = await Promise.all([
+              fetch('http://localhost:3000/categories'),
+              fetch('http://localhost:3000/products')
+          ]);
+  
+          const categories = await categoriesRes.json();
+          const products = await productsRes.json();
+  
+          productsByCategoryElement.innerHTML = categories.map(category => {
+              const productsInCategory = products.filter(
+                  product => product.categories_id === category.id // ändra till rätt fältnamn om det skiljer sig
+              );
+  
+              if (productsInCategory.length === 0) return '';
+  
+              return `
+                  <div class="category-block">
+                      <h3>${category.name}</h3>
+                      ${productsInCategory.map(product => `
+                          <div class="product">
+                              <strong>${product.title}</strong><br>
+                              Pris: ${product.price} kr<br>
+                              ${product.description}
+                          </div>
+                      `).join('')}
+                  </div>
+              `;
+          }).join('');
+  
+      } catch (err) {
+          productsByCategoryElement.innerHTML = "Kunde inte ladda kategorier och produkter.";
+          console.error(err);
+      }
+  };
+  
+  fetchCategoriesAndProducts();
+  */
+
+  /*
+  categoriesElement.innerHTML = filteredCategories.map((category) => `
+  <div class="category-block" data-id="${category.id}">
+      <h3 class="category-title">${category.name}</h3>
+      <div class="products-container" style="display: none;"></div>
+  </div>
+`).join('');
+
+// Lägg till event listeners
+document.querySelectorAll('.category-title').forEach(title => {
+  title.addEventListener('click', (event) => {
+      const categoryBlock = event.target.closest('.category-block');
+      const productsContainer = categoryBlock.querySelector('.products-container');
+      const categoryId = parseInt(categoryBlock.dataset.id, 10);
+
+      const productsInCategory = products.filter(
+          product => product.categories_id === categoryId
+      );
+
+      productsContainer.innerHTML = productsInCategory.length > 0
+          ? productsInCategory.map(product => `
+              <div class="product">
+                  <strong>${product.title}</strong><br>
+                  Pris: ${product.price} kr<br>
+                  ${product.description}
+              </div>
+          `).join('')
+          : '<p>Inga produkter i denna kategori.</p>';
+
+      // Visa/dölj produkterna (växla visning)
+      productsContainer.style.display =
+          productsContainer.style.display === 'none' ? 'block' : 'none';
+  });
+});
+*/
