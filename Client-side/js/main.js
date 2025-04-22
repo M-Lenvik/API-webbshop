@@ -65,6 +65,7 @@ const getQueryString = (e) => {
       console.log('Kategorier:', categories)
      
 
+      /*
         document.querySelectorAll('.category-title').forEach(title => {
         title.addEventListener('click', (event) => {
             const categoryBlock = event.target.closest('.category-block');
@@ -92,6 +93,60 @@ const getQueryString = (e) => {
                 productsContainer.style.display === 'none' ? 'block' : 'none';
             });
     
+        });
+
+        */
+
+
+        document.querySelectorAll('.category-title').forEach(title => {
+            title.addEventListener('click', async (event) => {
+                const categoryBlock = event.target.closest('.category-block');
+                const productsContainer = categoryBlock.querySelector('.products-container');
+                const categoryId = parseInt(categoryBlock.dataset.id, 10);
+        
+  /*              // Förhindra att produkterna hämtas om categoryId är ogiltigt
+                if (!categoryId) {
+                    console.error('Ogiltigt kategori-ID:', categoryId);
+                    return;
+                }
+    */    
+                try {
+                    const response = await fetch(`http://localhost:3000/categories/${categoryId}/products`);
+
+                    /*
+                    if (!response.ok) {
+                        throw new Error('Något gick fel med att hämta produkterna');
+                    }
+    */
+                    
+                    const productsInCategory = await response.json();
+        
+                    // Kontrollera om det finns några produkter och rendera dem
+                    if (productsInCategory.length > 0) {
+                        productsContainer.innerHTML = productsInCategory.map(product => `
+                            <div class="product">
+                                <strong>${product.title}</strong><br>
+                                Pris: ${product.price} kr<br>
+                                ${product.description}<br>
+                                ${product.stock > 0 ? 
+                                    `<span class="in-stock">Finns i lager</span>` 
+                                    : `<span class="out-of-stock">Slutsåld</span>`
+                            
+                                  }
+                                </div>
+                        `).join('');
+                    } else {
+                        productsContainer.innerHTML = '<p>Det finns för närvarande inga produkter i denna kategori.</p>';
+                    }
+        
+                    // Växla visning av produkterna
+                    productsContainer.style.display = 
+                        productsContainer.style.display === 'none' ? 'block' : 'none';
+                } catch (error) {
+                    console.error('Fel vid hämtning av produkter:', error);
+                    productsContainer.innerHTML = '<p>Kunde inte ladda produkter.</p>';
+                }
+            });
         });
         console.log('Produkter:', products);
         }
