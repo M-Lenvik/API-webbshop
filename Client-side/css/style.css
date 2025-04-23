@@ -1,20 +1,77 @@
 body{
-    background-color: burlywood;
+    background-color: rgb(243, 243, 243);
 }
 
-#categories{
-    margin-top: 20px;
-    background-color: burlywood;
+main{
+    width: 50%;
+    margin: 0 auto;
 }
 
-#categories div{
+
+.categories{
     margin-top: 20px;
-    border: 1px solid #ccc;
+    width: 90%;
+}
+
+.categories div{
+    margin-top: 20px;
+    border: 1px solid #6e6e6e;
     padding: 10px;
     border-radius: 5px;
+    background-color: rgb(235, 232, 232);
 }
 
-.category{
-    display: block;
-    font-size: 2em;
+/*
+.products-container{
+    grid-column: span 3;
+    position: relative;
 }
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: relative;
+    gap: 1rem;
+    width: 40%;
+    border: 1px solid #c42828;
+    border-radius: 5px;
+  }
+  */
+  
+.products-container {
+    display: flex;
+    flex-wrap: wrap; /* Gör att produkterna får plats på flera rader om det behövs */
+    gap: 20px; /* Mellanrum mellan produkterna */
+}
+
+.product {
+    flex: 1; /* Flex-garanti: tar upp lika mycket plats, min 200px per produkt */
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    text-align: center;
+    width: 30%;
+}
+  
+.product img {
+    max-width: 5em;
+    height: auto;
+    border-radius: 4px;
+}
+  
+.in-stock {
+    color: green;
+    font-weight: bold;
+}
+  
+.out-of-stock {
+    color: red;
+    font-weight: bold;
+}
+  
+
+
+
+

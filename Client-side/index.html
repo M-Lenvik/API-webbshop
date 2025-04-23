@@ -9,16 +9,10 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+    <main>
     <h1>API Webbshop</h1>
     <div class="container">
-        <button id="filterAccessories">Visa endast Accessoarer</button>
-        <button id="filterElectronics">Visa endast Elektronik</button>
-        <button id="filterCloths">Visa endast Kläder</button>
-        <button id="filterLights">Visa endast Lampor</button>
-        <button id="filterFurnitures">Visa endast Möbler</button>
-        <button id="filterLinnen">Visa endast Sängkläder</button>
-        <button id="filterShoes">Visa endast Skor</button>
-        <button id="filterOutdoorFutnitures">Visa endast Utemöbler</button>
+        <div id="filter-buttons"></div>
         <button id="showAll">Visa alla</button>
 
         <form id="categories-form" class="row g-3 flex justify-content-end">
@@ -33,9 +27,10 @@
             </div>
         </form>
    
-        <div id="categories"></div>
-        <div id="products-by-category"></div>
+        <div id="categories" class="categories"></div>
+        <div id="products-by-category" class="products"></div>
     </div>
+</main>
     <script src="js/main.js"></script>
 </body>
 </html>
