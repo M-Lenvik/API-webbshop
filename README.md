@@ -135,10 +135,21 @@ Det skall inte gå att skapa/uppdatera produkter, samt passande felmeddelande sk
 - Visa kategorier och dess produkter på en webbsida
 - Möjlighet att söka, sortera, filtrera, ta bort via webbsidan
 
-## Skärmdump
+## Bilder
+**ER Diagram** <br>
+![ER-diagram_VG_uppgift drawio](https://github.com/user-attachments/assets/ffc997a4-d9e2-4642-8bfb-0a963be97e09)
+
+**Databastabeller**<br>
+Tabellstruktur<br>
+<img width="491" alt="Tabeller" src="https://github.com/user-attachments/assets/c27bdb9f-3a33-4f50-ab88-fd355fd658df" /><br>
+categories<br>
+<img width="443" alt="categories" src="https://github.com/user-attachments/assets/e2847e61-d289-4f1b-b097-27360956a926" />3<br>
+categories_type<br>
+<img width="425" alt="categories_type" src="https://github.com/user-attachments/assets/7cf18d9a-32db-431d-a0a5-527f8ae2e777" /><br>
+products<br>
+<img width="495" alt="products" src="https://github.com/user-attachments/assets/e9ab8e9e-ad47-4de3-9ecc-d83aafbc7bd2" /><br>
+Webbsidan<br>
 <img width="353" alt="image" src="https://github.com/user-attachments/assets/d9832d45-efa1-471b-b528-085c7daacb2c"/>
-
-
 
 ## Slutbetyg
 <!--![Betyg API utveckling, individuell uppgift]-->
