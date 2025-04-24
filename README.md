@@ -1,5 +1,3 @@
-# API-webbshop
-Inlämningsuppgift 1
 # Kurs: API-utveckling
 
 ## Utbildning till Frontend developer på Medieinstitutet
@@ -41,11 +39,11 @@ npm run dev
 ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![Insomnia](https://img.shields.io/badge/Insomnia-black?style=for-the-badge&logo=insomnia&logoColor=5849BE)
 
 
-**Uppgiftsbeskrivning:** <br>
+##Uppgiftsbeskrivning
 
 **Inlämning 1 - API-utveckling och DB-normalisering**
 
-**Uppgiftsbeskrivning och krav**
+**Uppgiftsbeskrivning och krav** <br>
 Ni skall göra ett normaliserat ER-diagram och ett API för en produktkatalog i en e-shop.
 Det gäller specifikt produkter och tillhörande kategorier.
 
@@ -62,7 +60,7 @@ Tabellen "categories" skall innehålla följande information:
 
 Obs: Ytterligare fält för PK och FK får ni lägga till på egen hand, så att DB-tabellerna funkar korrekt enligt beskrivning nedan.
 
-**Uppgiftskrav på G-nivå**
+**Uppgiftskrav på G-nivå** <br>
 Skapa ett korrekt normaliserat ER-diagram efter följande beskrivning:
 
 - En e-shop har produkter och kategorier
@@ -97,7 +95,7 @@ Skapa CRUD för produkter, med följande endpoints:
 
 - Radera befintlig produkt med DELETE: http://localhost:3000/products/:id
 
-**Uppgiftskrav på VG-nivå**
+**Uppgiftskrav på VG-nivå** <br>
 Allt som G-nivån innefattar, med följande skillnader/tillägg:
 
 Skapa ett korrekt normaliserat ER-diagram efter följande beskrivning:
@@ -136,4 +134,4 @@ Det skall inte gå att skapa/uppdatera produkter, samt passande felmeddelande sk
 
 
 ## Slutbetyg
-  ![Betyg API utveckling, individuell uppgift ](https://github.com/user-attachments/assets/df6f634a-4a4c-4bcf-95f5-a616c369786d)
+<!--![Betyg API utveckling, individuell uppgift]-->
