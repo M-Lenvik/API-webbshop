@@ -51,7 +51,9 @@ const fetchCategories = async (e) => {
         // bytt från 4 rader ned (53 i skrivande stund).    <div class="products-container" style="display: none;"></div>
         categoriesElement.innerHTML = filteredCategories.map((category) => `
             <div class="category-block" data-id="${category.id}">
-                <h3 class="category-title">${category.name}</h3>
+                <h3 class="category-title">${category.name}</h3> 
+
+
                 <div class="products-container product-grid" style="display: none;"></div>
 
             </div>
@@ -92,15 +94,21 @@ const fetchCategories = async (e) => {
                                         `<span class="in-stock">Finns i lager</span>` 
                                         : `<span class="out-of-stock">Slutsåld</span>`
                                     }</p>
-                                    <button>Köp</button>
+                                    <button class="deleteProduct" data-id="${product.id}">Radera produkt</button>
+
                                 </div>
                             </div>
                         `).join('');
                     } 
                     //<img src="http://localhost:3000/img/${product.image}" alt="${product.title}">
 
+
+
                     else {
-                        productsContainer.innerHTML = '<p>Det finns för närvarande inga produkter i denna kategori.</p>';
+                        productsContainer.innerHTML = `
+                        <p>Det finns för närvarande inga produkter i denna kategori.</p>
+                        <button class="deleteCategoryBtn" data-id="${categoryId}">Ta bort kategori</button>
+                      `;
                     }
         
                     // Växla visning av produkterna
@@ -121,6 +129,88 @@ const fetchCategories = async (e) => {
         console.log('Catch error:', error);
     }
 };
+
+
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*DELETE~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+document.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('deleteCategoryBtn')) {
+      const categoryId = e.target.dataset.id;
+  
+      if (!categoryId) return;
+  
+      // Kontrollera först om kategorin innehåller produkter
+      try {
+        const response = await fetch(`http://localhost:3000/categories/${categoryId}/products`);
+        const productsInCategory = await response.json();
+  
+        if (productsInCategory.length > 0) {
+          alert('Kan inte ta bort kategori som innehåller produkter.');
+          return;
+        }
+  
+        // Om inga produkter finns, fråga om användaren vill ta bort
+        const confirmed = confirm('Den här kategorin är tom. Vill du ta bort den?');
+        if (confirmed) {
+          const deleteResponse = await fetch(`http://localhost:3000/categories/${categoryId}`, {
+            method: 'DELETE',
+          });
+  
+          if (deleteResponse.ok) {
+            alert('Kategorin togs bort.');
+            fetchCategories(); // Uppdatera vyn
+          } else {
+            const err = await deleteResponse.json();
+            alert(err.message || 'Misslyckades att ta bort kategori');
+          }
+        }
+      } catch (error) {
+        console.error('Fel vid kontroll/tillägg:', error);
+        alert('Ett fel uppstod vid borttagning');
+      }
+    }
+  });
+  
+
+
+
+const deleteProduct = async (productId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/products/${productId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Fel vid borttagning');
+      }
+  
+      return true;
+    } catch (error) {
+      console.error('Kunde inte ta bort produkt:', error);
+      alert(error.message);
+      return false;
+    }
+  };
+  
+
+
+  document.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('deleteProduct')) {
+      const productId = e.target.dataset.id;
+  
+      if (confirm('Är du säker på att du vill ta bort produkten?')) {
+        const wasDeleted = await deleteProduct(productId);
+        if (wasDeleted) {
+          alert('Produkten togs bort');
+          fetchCategories(); // Uppdatera vyn
+        }
+      }
+      console.log('Delete product:', productId);
+    }
+  });
+  
+  
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*DELETE~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*Buttons~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
@@ -179,5 +269,7 @@ showAllButton.addEventListener('click', () => {
     matchExactCategory = false;
     fetchCategories();
 });
+
+
 
 fetchCategories();
