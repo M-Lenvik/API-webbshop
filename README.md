@@ -149,7 +149,7 @@ Categories_type<br>
 Products<br>
 <img width="495" alt="products" src="https://github.com/user-attachments/assets/e9ab8e9e-ad47-4de3-9ecc-d83aafbc7bd2" /><br><br>
 **Webbsidan**<br>
-<img width="353" alt="image" src="https://github.com/user-attachments/assets/d9832d45-efa1-471b-b528-085c7daacb2c"/>
+
 
 ## Slutbetyg
 <!--![Betyg API utveckling, individuell uppgift]-->
