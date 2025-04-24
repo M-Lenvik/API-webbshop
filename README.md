@@ -23,7 +23,7 @@ OBS! Att fokus i denna uppgift enbart har legat på att skapa databaser och kopp
 
 ## Kom igång med projektet
 Ladda ner tabellerna till databasen och importera i exempelvis myPHPadmin: <br>
-webshop.sql är filen för detta här ovan.
+[webshop.sql är filen för detta. Finns även bland filerna ovan.](https://github.com/M-Lenvik/API-webbshop/blob/main/webshop.sql)
 
 **Installera genom följande:**
 ```
@@ -142,11 +142,11 @@ Det skall inte gå att skapa/uppdatera produkter, samt passande felmeddelande sk
 **Databastabeller**<br>
 Tabellstruktur<br>
 <img width="491" alt="Tabeller" src="https://github.com/user-attachments/assets/c27bdb9f-3a33-4f50-ab88-fd355fd658df" /><br>
-categories<br>
-<img width="443" alt="categories" src="https://github.com/user-attachments/assets/e2847e61-d289-4f1b-b097-27360956a926" />3<br>
-categories_type<br>
+Categories<br>
+<img width="443" alt="categories" src="https://github.com/user-attachments/assets/e2847e61-d289-4f1b-b097-27360956a926" /><br>
+Categories_type<br>
 <img width="425" alt="categories_type" src="https://github.com/user-attachments/assets/7cf18d9a-32db-431d-a0a5-527f8ae2e777" /><br>
-products<br>
+Products<br>
 <img width="495" alt="products" src="https://github.com/user-attachments/assets/e9ab8e9e-ad47-4de3-9ecc-d83aafbc7bd2" /><br><br>
 **Webbsidan**<br>
 <img width="353" alt="image" src="https://github.com/user-attachments/assets/d9832d45-efa1-471b-b528-085c7daacb2c"/>
