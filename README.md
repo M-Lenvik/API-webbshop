@@ -18,10 +18,12 @@ Skapad av **Marie Lenvik** <br> https://github.com/M-Lenvik
 
 ## Beskrivning av sidan
 <p>Denna sida är skapad för en uppgift som en del i utbildningen till Frontend utvecklare på Medieinstititet. <br>
-Detta är en webshop skapad utifrån en databas som jag också skapat.</p>
+Detta är en webshop skapad utifrån en databas som jag också skapat. <br> <br>
+OBS! Att fokus i denna uppgift enbart har legat på att skapa databaser och kopplingar till denna, dvs bara backend. Inget fokus alls har legat på frontend delen. Jag har själv valt att presentera kategorier och produkter på en webbsida. Detta ingick alltså inte i uppgiften och därmed har jag inte hunnit skapa en bättre design än detta.</p>
 
 ## Kom igång med projektet
-Ladda ner tabellerna till databasen: 
+Ladda ner tabellerna till databasen och importera i exempelvis myPHPadmin: <br>
+webshop.sql är filen för detta här ovan.
 
 **Installera genom följande:**
 ```
@@ -39,7 +41,7 @@ npm run dev
 ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![Insomnia](https://img.shields.io/badge/Insomnia-black?style=for-the-badge&logo=insomnia&logoColor=5849BE)
 
 
-##Uppgiftsbeskrivning
+## Uppgiftsbeskrivning
 
 **Inlämning 1 - API-utveckling och DB-normalisering**
 
@@ -124,13 +126,18 @@ Det skall inte gå att skapa/uppdatera produkter, samt passande felmeddelande sk
 
 
 ## Sammanfattning
-**Detta är vad som gjort för uppgiften:** <br>
+**Detta är vad som gjorts för uppgiften:** <br>
 - Skapa ett ER Diagram
 - Skapa tabeller i phpMyAdmin efter ER diagrammet
 - Skapa SQL för CRUD (Create, Read, Update, Delete) för categorier och produkter
 
+**Extra utöver uppgiften:** <br>
+- Visa kategorier och dess produkter på en webbsida
+- Möjlighet att söka, sortera, filtrera, ta bort via webbsidan
+
 ## Skärmdump
-<img width="353" alt="image" src="https://github.com/user-attachments/assets/343550e0-a629-4189-8ed8-e461aa42b305" />
+<img width="353" alt="image" src="https://github.com/user-attachments/assets/d9832d45-efa1-471b-b528-085c7daacb2c"/>
+
 
 
 ## Slutbetyg
