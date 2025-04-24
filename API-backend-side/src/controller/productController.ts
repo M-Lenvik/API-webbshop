@@ -70,8 +70,8 @@ export const fetchProductsByCategoryId = async (req: Request, res: Response) => 
             ON products.id = categories_type.product_id
         WHERE categories_type.category_id = ?;
     `;
-    
     //man skriver ? här som placeholder iställer för WHERE id =  ${id} för att förhindra dataintrång. ? hämtas ändå som id nedan.
+
     const [rows] = await db.query<ICategoriesDBResponse[]>(sql, [categoryId]);
 
 
@@ -87,12 +87,6 @@ export const fetchProductsByCategoryId = async (req: Request, res: Response) => 
         res.status(500).json({ error: error, message: "Server error vid sortering" });
     }
 }; 
-
-
-
-
-
-
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
@@ -112,7 +106,6 @@ export const fetchProductById = async (req: Request, res: Response) => {
             ON categories_type.category_id = categories.id
         WHERE products.id = ?;
     `;
-    //man skriver ? här som placeholder iställer för WHERE id =  ${id} för att förhindra dataintrång. ? hämtas ändå som id nedan.
     
     const [rows] = await db.query<ICategoriesDBResponse[]>(sql, [productId]);
     const product = rows[0];
@@ -128,7 +121,6 @@ export const fetchProductById = async (req: Request, res: Response) => {
     }
 }; 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
-
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 //Skapa ny produkt med POST: http://localhost:3000/products
@@ -168,11 +160,9 @@ export const createProduct = async (req: Request, res: Response): Promise<Respon
                 VALUES ?
             `;
 
-    const categoryData = category_ids.map((categoryId: number) => [categoryId, productId]);
-
-    await db.query(insertCategorySql, [categoryData]);
-
-            return res.status(201).json({message: 'Ny produkt tillagd', id: productId});
+            const categoryData = category_ids.map((categoryId: number) => [categoryId, productId]);
+            await db.query(insertCategorySql, [categoryData]);
+                return res.status(201).json({message: 'Ny produkt tillagd', id: productId});
         }
 
         catch(error: unknown){
@@ -236,7 +226,6 @@ export const updateProduct = async (req: Request, res: Response) => {
             return;
         }
 
-
         if (Array.isArray(category_ids)) {
             //Ta bort gamla kopplingar
             const deleteSql = `
@@ -253,15 +242,14 @@ export const updateProduct = async (req: Request, res: Response) => {
             `;
             const categoryData = category_ids.map((categoryId: number) => [categoryId, Number(id)]);
             await db.query(insertSql, [categoryData]);
-          }
+        }
       
-          res.status(200).json({
+        res.status(200).json({
             message: "Produkt uppdaterad",
             id,
             updatedFields: fieldsToUpdate.map(f => f.split(" ")[0]),
-
-          });
-        }
+        });
+    }
 
     catch (error: unknown) {
         const message = error instanceof Error ? error.message : "Unknown error";
@@ -282,6 +270,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
         DELETE FROM categories_type 
         WHERE product_id = ?
     `;
+
     await db.query(deleteRelationsSql, [id]);
 
         const sql = `
@@ -296,16 +285,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
         }
     res.json({message: "Produkt borttagen"});
     }
-
     catch (error: unknown) {
         const message = error instanceof Error ? error.message : 'Unknown error'
         res.status (500).json ({error: message})
     }
 };
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
-
-
-
-
-//TODO:
-//Lägg till kontroll att stock finns med i produktlistan

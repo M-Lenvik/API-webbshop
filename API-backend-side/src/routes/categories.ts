@@ -17,7 +17,6 @@ const router = express.Router(); // Create an instanse
 
 router.get('/', fetchAllCategories); // Hämta alla kategorier
 router.get('/:id/products', fetchProductsByCategoryId); // Hämta produkt ur kategori
-//console.log("createCategory är:", createCategory);
 router.post('/', createCategory); // Skapa ny kategori
 router.patch('/:id', updateCategory); // Uppdatera befintlig kategori
 router.delete('/:id', deleteCategory); // Uppdatera befintlig kategori

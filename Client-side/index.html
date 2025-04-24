@@ -11,30 +11,30 @@
 </head>
 <body>
     <main>
-    <h1>API Webbshop</h1>
-    <div class="container">
-        <div id="filter-buttons" class="filter-buttons"></div>
+        <h1>API Webbshop</h1>
+        <div class="container">
+            <div id="filter-buttons" class="filter-buttons"></div>
 
+            <div class="search-sort-buttons">
+                <button id="showAll">Visa alla</button>
+                <form id="categories-form"c class="categories-form">
 
-        <div class="search-sort-buttons">
-        <button id="showAll">Visa alla</button>
-        <form id="categories-form"c class="categories-form">
+                        <input type="text" id="search" class="search" placeholder="Sök kategori eller produkt" name="search">
 
-                <input type="text" id="search" class="search" placeholder="Sök kategori eller produkt" name="search">
-
-            <div class="col-md-2">
-                <select id="inputState" id="sort" class="sort" name="sort">
-                    <option value="asc">Sortera på Kategori A <- -> Ö</option>
-                    <option value="desc">Sortera på Kategori Ö <- -> A</option>
-                </select>
+                    <div class="col-md-2">
+                        <select id="inputState" id="sort" class="sort" name="sort">
+                            <option value="asc">Sortera på Kategori A <- -> Ö</option>
+                            <option value="desc">Sortera på Kategori Ö <- -> A</option>
+                        </select>
+                    </div>
+                </form>
             </div>
-        </form>
+    
+            <div id="categories" class="categories"></div>
+            <div id="products-by-category" class="products"></div>
         </div>
-   
-        <div id="categories" class="categories"></div>
-        <div id="products-by-category" class="products"></div>
-    </div>
-</main>
-    <script src="js/main.js"></script>
+    </main>
+
+<script src="js/main.js"></script>
 </body>
 </html>

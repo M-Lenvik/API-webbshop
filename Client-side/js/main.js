@@ -46,14 +46,11 @@ const fetchCategories = async (e) => {
                 category.name.toLowerCase() === currentSearchTerm.toLowerCase()
             );
         }
-        //                <div class="products-container product-grid" style="display: none;"></div>
-        // <div class="products-container product-grid">
-        // bytt från 4 rader ned (53 i skrivande stund).    <div class="products-container" style="display: none;"></div>
+
         categoriesElement.innerHTML = filteredCategories.map((category) => `
             <div class="category-block" data-id="${category.id}">
                 <h3 class="category-title">${category.name}</h3>
                 <div class="products-container product-grid" style="display: none;"></div>
-
             </div>
         `).join('');
         console.log('Kategorier:', categories)
@@ -65,7 +62,6 @@ const fetchCategories = async (e) => {
                 const productsContainer = categoryBlock.querySelector('.products-container');
                 const categoryId = parseInt(categoryBlock.dataset.id, 10);
         
-                // Förhindra att produkterna hämtas om categoryId är ogiltigt
                 if (!categoryId) {
                     console.error('Ogiltigt kategori-ID:', categoryId);
                     return;
@@ -96,8 +92,7 @@ const fetchCategories = async (e) => {
                                 </div>
                             </div>
                         `).join('');
-                    } 
-                    //<img src="http://localhost:3000/img/${product.image}" alt="${product.title}">
+                    }
 
                     else {
                         productsContainer.innerHTML = '<p>Det finns för närvarande inga produkter i denna kategori.</p>';
@@ -122,11 +117,10 @@ const fetchCategories = async (e) => {
     }
 };
 
-
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*Buttons~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 sortElement.addEventListener('change', (event) => {
     currentSortOption = event.target.value;
-    fetchCategories(); //Anropa fetchCategories med uppdaterade värden
+    fetchCategories();
 });
 
 searchElement.addEventListener('input', (event) => {
@@ -137,20 +131,16 @@ searchElement.addEventListener('input', (event) => {
 
 //Dynamiskt skapade knappar beroende på vilka kategorier som finns i databasen
 const filterButtons = document.getElementById('filter-buttons');
+
 async function renderFilterButtons() {
     try {
         const response = await fetch('http://localhost:3000/categories');
         const categories = await response.json();
         filterButtons.innerHTML = '';
 
-        // Filtrera bort dolda/inaktiva kategorier
-        const visibleCategories = categories.filter(category => {
-            const notHidden = !category.hidden;
-            const isActive = category.active !== false;
-            return notHidden && isActive;
-        });
+        categories.forEach(category => {
+            if (category.hidden || category.active === false) return;
 
-        visibleCategories.forEach(category => {
             const button = document.createElement('button');
             button.textContent = category.name;
             button.classList.add('category-filter-button');
@@ -169,6 +159,7 @@ async function renderFilterButtons() {
         filterButtons.innerHTML = '<p>Fel vid hämtning av kategorier.</p>';
     }
 }
+
 //Visa alla knapparna
 document.addEventListener('DOMContentLoaded', () => {
     renderFilterButtons();
@@ -179,5 +170,6 @@ showAllButton.addEventListener('click', () => {
     matchExactCategory = false;
     fetchCategories();
 });
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*Buttons~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
 fetchCategories();

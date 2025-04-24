@@ -46,28 +46,21 @@ const fetchCategories = async (e) => {
                 category.name.toLowerCase() === currentSearchTerm.toLowerCase()
             );
         }
-        //                <div class="products-container product-grid" style="display: none;"></div>
-        // <div class="products-container product-grid">
-        // bytt från 4 rader ned (53 i skrivande stund).    <div class="products-container" style="display: none;"></div>
+
         categoriesElement.innerHTML = filteredCategories.map((category) => `
             <div class="category-block" data-id="${category.id}">
                 <h3 class="category-title">${category.name}</h3> 
-
-
                 <div class="products-container product-grid" style="display: none;"></div>
-
             </div>
         `).join('');
         console.log('Kategorier:', categories)
              
-
         document.querySelectorAll('.category-title').forEach(title => {
             title.addEventListener('click', async (event) => {
                 const categoryBlock = event.target.closest('.category-block');
                 const productsContainer = categoryBlock.querySelector('.products-container');
                 const categoryId = parseInt(categoryBlock.dataset.id, 10);
         
-                // Förhindra att produkterna hämtas om categoryId är ogiltigt
                 if (!categoryId) {
                     console.error('Ogiltigt kategori-ID:', categoryId);
                     return;
@@ -100,9 +93,6 @@ const fetchCategories = async (e) => {
                             </div>
                         `).join('');
                     } 
-                    //<img src="http://localhost:3000/img/${product.image}" alt="${product.title}">
-
-
 
                     else {
                         productsContainer.innerHTML = `
@@ -130,7 +120,6 @@ const fetchCategories = async (e) => {
     }
 };
 
-
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*DELETE~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 document.addEventListener('click', async (e) => {
     if (e.target.classList.contains('deleteCategoryBtn')) {
@@ -138,7 +127,7 @@ document.addEventListener('click', async (e) => {
   
       if (!categoryId) return;
   
-      // Kontrollera först om kategorin innehåller produkter
+      //Kontrollera om kategorin innehåller produkter
       try {
         const response = await fetch(`http://localhost:3000/categories/${categoryId}/products`);
         const productsInCategory = await response.json();
@@ -147,8 +136,7 @@ document.addEventListener('click', async (e) => {
           alert('Kan inte ta bort kategori som innehåller produkter.');
           return;
         }
-  
-        // Om inga produkter finns, fråga om användaren vill ta bort
+
         const confirmed = confirm('Den här kategorin är tom. Vill du ta bort den?');
         if (confirmed) {
           const deleteResponse = await fetch(`http://localhost:3000/categories/${categoryId}`, {
@@ -157,7 +145,7 @@ document.addEventListener('click', async (e) => {
   
           if (deleteResponse.ok) {
             alert('Kategorin togs bort.');
-            fetchCategories(); // Uppdatera vyn
+            fetchCategories();
           } else {
             const err = await deleteResponse.json();
             alert(err.message || 'Misslyckades att ta bort kategori');
@@ -169,9 +157,6 @@ document.addEventListener('click', async (e) => {
       }
     }
   });
-  
-
-
 
 const deleteProduct = async (productId) => {
     try {
@@ -191,8 +176,6 @@ const deleteProduct = async (productId) => {
       return false;
     }
   };
-  
-
 
   document.addEventListener('click', async (e) => {
     if (e.target.classList.contains('deleteProduct')) {
@@ -202,14 +185,12 @@ const deleteProduct = async (productId) => {
         const wasDeleted = await deleteProduct(productId);
         if (wasDeleted) {
           alert('Produkten togs bort');
-          fetchCategories(); // Uppdatera vyn
+          fetchCategories();
         }
       }
       console.log('Delete product:', productId);
     }
   });
-  
-  
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*DELETE~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
 
@@ -225,26 +206,22 @@ searchElement.addEventListener('input', (event) => {
     fetchCategories();
 });
 
-//Dynamiskt skapade knappar beroende på vilka kategorier som finns i databasen
+// Dynamiskt skapade knappar beroende på vilka kategorier som finns i databasen
 const filterButtons = document.getElementById('filter-buttons');
+
 async function renderFilterButtons() {
     try {
         const response = await fetch('http://localhost:3000/categories');
         const categories = await response.json();
         filterButtons.innerHTML = '';
 
-        // Filtrera bort dolda/inaktiva kategorier
-        const visibleCategories = categories.filter(category => {
-            const notHidden = !category.hidden;
-            const isActive = category.active !== false;
-            return notHidden && isActive;
-        });
+        categories.forEach((category) => {
+            if (category.hidden || category.active === false) return;
 
-        visibleCategories.forEach(category => {
             const button = document.createElement('button');
             button.textContent = category.name;
             button.classList.add('category-filter-button');
-            
+
             button.addEventListener('click', () => {
                 currentSearchTerm = category.name;
                 matchExactCategory = true;
@@ -253,23 +230,20 @@ async function renderFilterButtons() {
 
             filterButtons.appendChild(button);
         });
-    } 
-    catch (error) {
+    } catch (error) {
         console.error('Kunde inte ladda filterknappar:', error);
         filterButtons.innerHTML = '<p>Fel vid hämtning av kategorier.</p>';
     }
 }
-//Visa alla knapparna
+
 document.addEventListener('DOMContentLoaded', () => {
     renderFilterButtons();
-  });
+});
 
 showAllButton.addEventListener('click', () => {
     currentSearchTerm = '';
     matchExactCategory = false;
     fetchCategories();
 });
-
-
 
 fetchCategories();

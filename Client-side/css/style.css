@@ -22,26 +22,10 @@ main{
     width: 90%;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* Avstånd mellan knapparna */
+    gap: 10px;
     margin: 20px;
 
 }
-
-/*
-.category-filter-button {
-    padding: 8px 16px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.category-filter-button:hover {
-    background-color: #0056b3;
-}
-    */
 
 .search-sort-buttons {
     width: 90%;
@@ -60,38 +44,6 @@ main{
     margin-top: 10px;
 }
 
-
-/*
-.categories{
-    margin-top: 20px;
-    width: 90%;
-}
-
-.categories div{
-    margin-top: 20px;
-    border: 1px solid #6e6e6e;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: rgb(235, 232, 232);
-}
-    */
-
-/*
-.products-container{
-    grid-column: span 3;
-    position: relative;
-}
-
-.product {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    position: relative;
-    gap: 1rem;
-    width: 40%;
-    border: 1px solid #c42828;
-    border-radius: 5px;
-  }
-  */
   .products-container {
     display: flex;
     flex-wrap: wrap;
@@ -127,7 +79,6 @@ main{
     margin-top: 10px;
 }
 
-  
 .product img {
     max-width: 5em;
     height: auto;
