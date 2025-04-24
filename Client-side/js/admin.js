@@ -47,9 +47,16 @@ const fetchCategories = async (e) => {
             );
         }
 
+
         categoriesElement.innerHTML = filteredCategories.map((category) => `
             <div class="category-block" data-id="${category.id}">
-                <h3 class="category-title">${category.name}</h3> 
+                <h3 class="category-title">${category.name}</h3>
+                <form class="category-form" data-id="${category.id}">
+                  <input name="name" value="${category.name}" />
+                  <button type="submit">Uppdatera kategori</button>
+                </form>
+
+
                 <div class="products-container product-grid" style="display: none;"></div>
             </div>
         `).join('');
@@ -73,26 +80,35 @@ const fetchCategories = async (e) => {
                     // Kontrollera om det finns några produkter och rendera dem
                     if (productsInCategory.length > 0) {
                         productsContainer.innerHTML = productsInCategory.map(product => `
-                            <div class="product">
-                                <div class="product-presentation">
-                                    <p><strong>${product.title}</strong></p>
-                                    <img src="/img/${product.image}" alt="${product.title}">
-                                </div>  
+                        <div class="product">  <form class="product-form" data-id="${product.id}">
+                            
+  
+                                <label>Titel: <input type="text" name="title" value="${product.title}" /></label><br>
+                                <label>Bildfil: <input type="text" name="image" value="${product.image}" /></label><br>
+                                <img src="/img/${product.image}" alt="${product.title}" /><br>
 
-                                <div class="product-information">
-                                    <p>${product.description}</p>
-                                    <p>Pris: ${product.price} kr</p>
-                                    
-                                    <p>${product.stock > 0 ? 
-                                        `<span class="in-stock">Finns i lager</span>` 
-                                        : `<span class="out-of-stock">Slutsåld</span>`
-                                    }</p>
-                                    <button class="deleteProduct" data-id="${product.id}">Radera produkt</button>
-
-                                </div>
+                        
+                              
+                                <label>Beskrivning:<br>
+                                  <textarea name="description">${product.description}</textarea>
+                                </label><br>
+                        
+                                <label>Pris: <input type="number" name="price" value="${product.price}" /></label><br>
+                                <label>Lager: <input type="number" name="stock" value="${product.stock}" /></label><br>
+                        
+                                <p>${product.stock > 0 
+                                  ? `<span class="in-stock">Finns i lager</span>` 
+                                  : `<span class="out-of-stock">Slutsåld</span>`
+                                }</p>
+                        
+                                <button class="updateProduct" type="submit">Uppdatera produkt</button>
+                                <button class="deleteProduct" data-id="${product.id}" type="button">Radera produkt</button>
+                            </form>  
                             </div>
+                        
                         `).join('');
                     } 
+                    
 
                     else {
                         productsContainer.innerHTML = `
@@ -119,6 +135,78 @@ const fetchCategories = async (e) => {
         console.log('Catch error:', error);
     }
 };
+
+
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*UPDATE~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
+/******************************CATEGORIES**********************************/
+document.addEventListener('submit', async (e) => {
+  if (e.target.classList.contains('category-form')) {
+    e.preventDefault();
+
+    const form = e.target;
+    const categoryId = form.dataset.id;
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const response = await fetch(`http://localhost:3000/categories/${categoryId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Något gick fel vid uppdatering');
+      }
+
+      fetchCategories(); // Ladda om uppdaterade kategorier
+    } catch (error) {
+      console.error('Fel vid uppdatering:', error);
+      alert('Kunde inte uppdatera kategori');
+    }
+  }
+});
+
+
+/******************************PRODUCTS**********************************/
+document.addEventListener('submit', async (event) => {
+  // Kolla om det är ett formulär med klassen "product-form"
+  if (event.target.classList.contains('product-form')) {
+
+    const form = event.target; // Formuläret
+    const productId = form.dataset.id; // Hämta produktens ID från formens data-id
+
+    // Samla in allt som användaren fyllt i
+    const formData = new FormData(form); // Gör om formuläret till ett objekt
+    const updatedProduct = Object.fromEntries(formData.entries()); 
+    // Gör om till ett vanligt JavaScript-objekt som t.ex.:
+    // { title: "Ny titel", price: "199", ... }
+
+    try {
+      const response = await fetch(`http://localhost:3000/products/${productId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedProduct)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.message || 'Kunde inte uppdatera produkten');
+        return;
+      }
+
+      alert('Produkten uppdaterades!');
+      fetchCategories();
+
+    } catch (error) {
+      console.error('Något gick fel:', error);
+      alert('Kunde inte uppdatera produkten just nu');
+    }
+  }
+});
+/*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*UPDATE~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 
 /*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*DELETE~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*/
 document.addEventListener('click', async (e) => {

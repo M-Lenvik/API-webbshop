@@ -23,7 +23,7 @@ OBS! Att fokus i denna uppgift enbart har legat på att skapa databaser och kopp
 
 ## Kom igång med projektet
 Ladda ner tabellerna till databasen och importera i exempelvis myPHPadmin: <br>
-[webshop.sql är filen för detta. Finns även bland filerna ovan.](https://github.com/M-Lenvik/API-webbshop/blob/main/webshop.sql)
+[webshop.sql] är filen för detta. Finns även bland filerna ovan.(https://github.com/M-Lenvik/API-webbshop/blob/main/webshop.sql)
 
 **Installera genom följande:**
 ```

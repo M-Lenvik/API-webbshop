@@ -52,6 +52,19 @@ main{
     margin-bottom: 20px;
 }
 
+.category-form{
+    margin: 20px;
+}
+
+.updateProduct{
+    margin: 10px;
+}
+
+.deleteProduct{
+    margin: 10px;
+    background-color: rgb(224, 113, 113)
+}
+
 .product {
     display: flex;
     flex-direction: column;
@@ -63,6 +76,7 @@ main{
     background-color: #dddddd;
     border-radius: 5px;
     text-align: center;
+    margin-top: 10px;
     padding: 10px;
 }
 
