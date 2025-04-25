@@ -153,4 +153,4 @@ Products<br>
 
 
 ## Slutbetyg
-<!--![Betyg API utveckling, individuell uppgift]-->
+Betyg har ännu ej getts.
