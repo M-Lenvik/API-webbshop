@@ -153,4 +153,5 @@ Products<br>
 
 
 ## Slutbetyg
-Betyg har ännu ej getts.
+<img width="505" alt="Betyg API verktyg API webbshop" src="https://github.com/user-attachments/assets/caba3281-dcb5-4d63-94d3-f8405881eedb" />
+
